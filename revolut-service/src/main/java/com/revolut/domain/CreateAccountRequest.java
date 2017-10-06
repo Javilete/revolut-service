@@ -1,24 +1,26 @@
-package com.revolut.model;
+package com.revolut.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public class AccountRequest {
 
-    private String name;
+    private BigDecimal balance;
 
     public AccountRequest() {
         // Jackson deserialization
     }
 
     @JsonCreator
-    public AccountRequest(String name) {
-        this.name = name;
+    public AccountRequest(String balance) {
+        this.balance = new BigDecimal(balance);
     }
 
     @JsonProperty
-    public String getName() {
-        return name;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
     @Override
@@ -28,12 +30,12 @@ public class AccountRequest {
 
         AccountRequest that = (AccountRequest) o;
 
-        return name != null ? name.equals(that.name) : that.name == null;
+        return balance != null ? balance.equals(that.balance) : that.balance == null;
 
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return balance != null ? balance.hashCode() : 0;
     }
 }

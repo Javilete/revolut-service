@@ -1,0 +1,9 @@
+server:
+  type: simple
+  applicationContextPath: /api/v1
+  adminContextPath: /admin
+  connector:
+      type: http
+      port: 8060
+  requestLog:
+      appenders: []
