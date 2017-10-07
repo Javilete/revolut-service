@@ -75,7 +75,7 @@ public class GuidingTest {
                 .post("/accounts/transfer")
                 .then()
                 .assertThat()
-                .statusCode(200);
+                .statusCode(204);
 
         ValidatableResponse originAccResponse = RestAssured.given().contentType(ContentType.JSON.withCharset("UTF-8"))
                 .log()

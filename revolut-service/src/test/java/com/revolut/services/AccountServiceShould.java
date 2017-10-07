@@ -1,6 +1,7 @@
 package com.revolut.services;
 
 import com.revolut.dao.AccountRepository;
+import com.revolut.dao.LocalAccountAccountRepository;
 import com.revolut.domain.Account;
 import com.revolut.domain.CreateAccountRequest;
 import com.revolut.exceptions.NegativeBalanceException;
@@ -68,22 +69,22 @@ public class AccountServiceShould {
 
     @Test
     public void transfer_an_amount_from_origin_account_to_destination_account() {
-        when(localRepository.getAccountBy(ACC_ID))
+        when(localRepository.fetchBy(ACC_ID))
                 .thenReturn(Optional.of(ACCOUNT));
-        when(localRepository.getAccountBy(DESTINATION_ACC_ID))
+        when(localRepository.fetchBy(DESTINATION_ACC_ID))
                 .thenReturn(Optional.of(DESTINATION_ACCOUNT));
 
         accountService.transfer(ACC_ID, DESTINATION_ACC_ID, AMOUNT);
 
-        assertThat(localRepository.getAccountBy(ACC_ID).get().getBalance().doubleValue(), is(120.00));
-        assertThat(localRepository.getAccountBy(DESTINATION_ACC_ID).get().getBalance().doubleValue(), is(30.00));
+        assertThat(localRepository.fetchBy(ACC_ID).get().getBalance().doubleValue(), is(120.00));
+        assertThat(localRepository.fetchBy(DESTINATION_ACC_ID).get().getBalance().doubleValue(), is(30.00));
     }
 
     @Test(expected = NegativeBalanceException.class)
     public void throw_an_exception_when_account_balance_of_origin_account_is_below_zero() {
-        when(localRepository.getAccountBy(ACC_ID))
+        when(localRepository.fetchBy(ACC_ID))
                 .thenReturn(Optional.of(new Account(ACC_ID, new BigDecimal("-100.00"))));
-        when(localRepository.getAccountBy(DESTINATION_ACC_ID))
+        when(localRepository.fetchBy(DESTINATION_ACC_ID))
                 .thenReturn(Optional.of(DESTINATION_ACCOUNT));
 
         accountService.transfer(ACC_ID, DESTINATION_ACC_ID, AMOUNT);
@@ -91,7 +92,7 @@ public class AccountServiceShould {
 
     @Test(expected = NotFoundException.class)
     public void throw_not_found_exception_when_the_origin_account_is_not_found() {
-        when(localRepository.getAccountBy(NON_EXISTING_ACC_ID))
+        when(localRepository.fetchBy(NON_EXISTING_ACC_ID))
                 .thenReturn(Optional.empty());
 
         accountService.transfer(NON_EXISTING_ACC_ID, DESTINATION_ACC_ID, AMOUNT);
@@ -99,11 +100,27 @@ public class AccountServiceShould {
 
     @Test(expected = NotFoundException.class)
     public void throw_not_found_exception_when_the_destination_account_is_not_found() {
-        when(localRepository.getAccountBy(ACC_ID))
+        when(localRepository.fetchBy(ACC_ID))
                 .thenReturn(Optional.of(ACCOUNT));
-        when(localRepository.getAccountBy(NON_EXISTING_ACC_ID))
+        when(localRepository.fetchBy(NON_EXISTING_ACC_ID))
                 .thenReturn(Optional.empty());
 
         accountService.transfer(ACC_ID, NON_EXISTING_ACC_ID, AMOUNT);
+    }
+
+    @Test
+    public void fetch_an_existing_account() {
+        when(localRepository.fetchBy(ACC_ID))
+                .thenReturn(Optional.of(ACCOUNT));
+
+        assertThat(accountService.findBy(ACC_ID), is(ACCOUNT));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void throw_not_found_exception_when_there_is_no_account_with_such_id() {
+        when(localRepository.fetchBy(NON_EXISTING_ACC_ID))
+                .thenReturn(Optional.empty());
+
+        accountService.findBy(NON_EXISTING_ACC_ID);
     }
 }

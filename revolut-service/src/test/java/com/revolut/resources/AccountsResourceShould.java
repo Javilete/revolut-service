@@ -1,9 +1,11 @@
 package com.revolut.resources;
 
+import com.revolut.domain.Account;
 import com.revolut.domain.CreateAccountRequest;
 import com.revolut.domain.TransferRequest;
 import com.revolut.services.AccountService;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import javafx.animation.Animation;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +56,18 @@ public class AccountsResourceShould {
                 .post(Entity.entity(transferRequest, MediaType.APPLICATION_JSON));
 
         verify(accountService).transfer(originAcc, destinationAcc, amount);
+        assertThat(response.getStatus(), is(Response.Status.NO_CONTENT.getStatusCode()));
+    }
+
+    @Test
+    public void fetch_an_existing_account() {
+        String accId = UUID.randomUUID().toString();
+
+        Response response = resources.client().target("/accounts/" + accId)
+                .request()
+                .get();
+
+        verify(accountService).findBy(accId);
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
     }
 }

@@ -2,6 +2,7 @@ package com.revolut;
 
 import com.revolut.config.RevolutServiceConfiguration;
 import com.revolut.dao.AccountRepository;
+import com.revolut.dao.LocalAccountAccountRepository;
 import com.revolut.healthcheck.RevolutHealthCheck;
 import com.revolut.resources.AccountResource;
 import com.revolut.services.AccountService;
@@ -30,8 +31,8 @@ public class RevolutApplication extends Application<RevolutServiceConfiguration>
     public void run(RevolutServiceConfiguration revolutServiceConfiguration, Environment environment) throws Exception {
         RevolutHealthCheck healthCheck = new RevolutHealthCheck();
 
-        AccountRepository accountRepository = new AccountRepository();
-        AccountService accountService = new AccountService(new Generator(), accountRepository);
+        AccountRepository localAccountRepository = new LocalAccountAccountRepository();
+        AccountService accountService = new AccountService(new Generator(), localAccountRepository);
         AccountResource accountResource = new AccountResource(accountService);
 
         environment.jersey().register(accountResource);

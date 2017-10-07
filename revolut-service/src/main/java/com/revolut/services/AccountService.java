@@ -8,8 +8,6 @@ import com.revolut.utils.Generator;
 
 import javax.ws.rs.NotFoundException;
 import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class AccountService {
 
@@ -32,20 +30,18 @@ public class AccountService {
         return accIdentifier;
     }
 
+    public Account findBy(String accId) {
+        return accountRepository.fetchBy(accId)
+                .orElseThrow(() -> new NotFoundException("No account found with id: " + accId));
+    }
+
     public void transfer(String originAccId, String destinationAccId, BigDecimal amount) {
-        Account originAcc = accountRepository.getAccountBy(originAccId)
-                .orElseThrow(notFoundExceptionWith(originAccId));
-        if(!originAcc.hasEnoughBalance(amount)){
+        Account originAcc = this.findBy(originAccId);
+        if (!originAcc.hasEnoughBalance(amount)) {
             throw new NegativeBalanceException();
         }
 
-        accountRepository.getAccountBy(destinationAccId)
-                .orElseThrow(notFoundExceptionWith(destinationAccId))
-                .decrease(amount);
+        this.findBy(destinationAccId).decrease(amount);
         originAcc.add(amount);
-    }
-
-    private Supplier<NotFoundException> notFoundExceptionWith(String accId) {
-        return () -> new NotFoundException("No account with id: " + accId);
     }
 }
