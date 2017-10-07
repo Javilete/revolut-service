@@ -1,7 +1,9 @@
 package com.revolut.utils;
 
-/**
- * Created by javierlar on 05/10/2017.
- */
+import java.util.UUID;
+
 public class Generator {
+    public String getRandomId() {
+        return UUID.randomUUID().toString();
+    }
 }

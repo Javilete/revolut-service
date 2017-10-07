@@ -4,6 +4,6 @@ server:
   adminContextPath: /admin
   connector:
       type: http
-      port: 8060
+      port: 8062
   requestLog:
       appenders: []

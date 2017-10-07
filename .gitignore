@@ -1,2 +1,4 @@
 .idea/*
 *.iml
+revolut-service/target/*
+revolut-service-integration-test/target/*

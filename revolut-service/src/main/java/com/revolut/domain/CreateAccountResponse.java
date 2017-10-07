@@ -1,7 +1,18 @@
 package com.revolut.domain;
 
-/**
- * Created by javierlar on 06/10/2017.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CreateAccountResponse {
+
+    private final String accId;
+
+    @JsonCreator
+    public CreateAccountResponse(@JsonProperty("accId") String accId) {
+        this.accId = accId;
+    }
+
+    public String getAccId() {
+        return accId;
+    }
 }

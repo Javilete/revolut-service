@@ -19,6 +19,7 @@
         <dropwizard.version>1.1.4</dropwizard.version>
         <dropwizard.testing.version>1.0.5</dropwizard.testing.version>
         <restassured.version>2.9.0</restassured.version>
+        <shade.plugin.version>3.0.0</shade.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -66,6 +67,15 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${shade.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 

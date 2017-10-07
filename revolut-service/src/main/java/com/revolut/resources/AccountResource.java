@@ -1,7 +1,9 @@
 package com.revolut.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.revolut.model.AccountRequest;
+import com.revolut.domain.CreateAccountRequest;
+import com.revolut.domain.CreateAccountResponse;
+import com.revolut.domain.TransferRequest;
 import com.revolut.services.AccountService;
 
 import javax.validation.Valid;
@@ -22,10 +24,22 @@ public class AccountResource {
         this.accountService = accountService;
     }
 
-    @POST
     @Timed
-    public Response create(@Valid @NotNull AccountRequest accountRequest) {
-        final String accountId = accountService.insert(accountRequest);
-        return Response.status(Response.Status.CREATED).entity(accountId).build();
+    @POST
+    public Response create(@Valid @NotNull CreateAccountRequest createAccountRequest) {
+        final String accountId = accountService.insert(createAccountRequest);
+        return Response.status(Response.Status.CREATED)
+                .entity(new CreateAccountResponse(accountId))
+                .build();
+    }
+
+    @Timed
+    @Path("/transfer")
+    @POST
+    public Response create(@Valid @NotNull TransferRequest transferRequest) {
+        accountService.transfer(transferRequest.getOriginId(),
+                transferRequest.getDestinationId(),
+                transferRequest.getAmount());
+        return Response.status(Response.Status.OK).build();
     }
 }

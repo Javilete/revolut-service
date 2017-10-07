@@ -1,6 +1,11 @@
 package com.revolut;
 
 import com.revolut.config.RevolutServiceConfiguration;
+import com.revolut.dao.AccountRepository;
+import com.revolut.healthcheck.RevolutHealthCheck;
+import com.revolut.resources.AccountResource;
+import com.revolut.services.AccountService;
+import com.revolut.utils.Generator;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,6 +28,13 @@ public class RevolutApplication extends Application<RevolutServiceConfiguration>
 
     @Override
     public void run(RevolutServiceConfiguration revolutServiceConfiguration, Environment environment) throws Exception {
-        throw new UnsupportedOperationException();
+        RevolutHealthCheck healthCheck = new RevolutHealthCheck();
+
+        AccountRepository accountRepository = new AccountRepository();
+        AccountService accountService = new AccountService(new Generator(), accountRepository);
+        AccountResource accountResource = new AccountResource(accountService);
+
+        environment.jersey().register(accountResource);
+        environment.healthChecks().register("Revolut", healthCheck);
     }
 }

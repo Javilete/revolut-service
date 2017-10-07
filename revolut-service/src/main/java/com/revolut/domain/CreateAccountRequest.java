@@ -4,31 +4,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
-public class AccountRequest {
+public class CreateAccountRequest {
 
     private BigDecimal balance;
 
-    public AccountRequest() {
+    public CreateAccountRequest() {
         // Jackson deserialization
     }
 
     @JsonCreator
-    public AccountRequest(String balance) {
+    public CreateAccountRequest(String balance) {
         this.balance = new BigDecimal(balance);
     }
 
     @JsonProperty
-    public BigDecimal getBalance() {
-        return balance;
+    public Optional<BigDecimal> getBalance() {
+        return Optional.ofNullable(balance);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AccountRequest)) return false;
+        if (!(o instanceof CreateAccountRequest)) return false;
 
-        AccountRequest that = (AccountRequest) o;
+        CreateAccountRequest that = (CreateAccountRequest) o;
 
         return balance != null ? balance.equals(that.balance) : that.balance == null;
 
