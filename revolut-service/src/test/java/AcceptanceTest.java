@@ -65,6 +65,22 @@ public class AcceptanceTest {
     }
 
     @Test
+    public void should_throw_precodintion_failed_error_when_origin_account_does_not_have_enough_balance() {
+        String originAccId = createAnAccount(new CreateAccountRequest());
+        String destinationAccId = createAnAccount(new CreateAccountRequest());
+        TransferRequest transferRequest = new TransferRequest(
+                originAccId,
+                destinationAccId,
+                AMOUNT_TO_TRANSFER);
+
+        ValidatableResponse response = transferMoney(transferRequest,
+                Response.Status.PRECONDITION_FAILED.getStatusCode());
+
+        assertThat(response.extract().as(ErrorResponse.class).getMessage(),
+                is("Account with id: " + originAccId + " does not have enough balance"));
+    }
+
+    @Test
     public void should_throw_precodintion_failed_error_when_origin_account_id_is_null() {
         String destinationAccId = createAnAccount(new CreateAccountRequest());
         TransferRequest transferRequest = new TransferRequest(
@@ -130,22 +146,6 @@ public class AcceptanceTest {
                 new BigDecimal(-10.00));
 
         transferMoney(transferRequest, UNPROCESSABLE_ENTITY_STATUS_CODE);
-    }
-
-    @Test
-    public void should_throw_precodintion_failed_error_when_origin_account_does_not_have_enough_balance() {
-        String originAccId = createAnAccount(new CreateAccountRequest());
-        String destinationAccId = createAnAccount(new CreateAccountRequest());
-        TransferRequest transferRequest = new TransferRequest(
-                originAccId,
-                destinationAccId,
-                AMOUNT_TO_TRANSFER);
-
-        ValidatableResponse response = transferMoney(transferRequest,
-                Response.Status.PRECONDITION_FAILED.getStatusCode());
-
-        assertThat(response.extract().as(ErrorResponse.class).getMessage(),
-                is("Account with id: " + originAccId + " does not have enough balance"));
     }
 
     @Test
