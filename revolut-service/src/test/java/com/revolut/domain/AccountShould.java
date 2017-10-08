@@ -1,6 +1,5 @@
 package com.revolut.domain;
 
-import com.revolut.domain.model.Account;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,20 +14,20 @@ import static org.junit.Assert.assertTrue;
 public class AccountShould {
 
     private static final String ACCOUNT_ID = UUID.randomUUID().toString();
-    private static final String FIFTY_AMOUNT = "50.00";
+    private static final double FIFTY_AMOUNT = 50.00;
 
     private Account account;
 
     @Before
     public void setUp() throws Exception {
-        account = new Account(ACCOUNT_ID, new BigDecimal("100.00"));
+        account = new Account(ACCOUNT_ID, new BigDecimal(100.00));
     }
 
     @Test
     public void add_amount_to_current_balance() {
         account.add(new BigDecimal(FIFTY_AMOUNT));
 
-        assertThat(account.getBalance(), is(new BigDecimal("150.00")));
+        assertThat(account.getBalance(), is(new BigDecimal(150.00)));
     }
 
     @Test
@@ -45,6 +44,6 @@ public class AccountShould {
 
     @Test
     public void return_false_when_it_does_not_have_enough_balance() {
-        assertFalse(account.hasEnoughBalance(new BigDecimal("100.01")));
+        assertFalse(account.hasEnoughBalance(new BigDecimal(100.01)));
     }
 }

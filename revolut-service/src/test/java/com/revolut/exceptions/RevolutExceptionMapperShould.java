@@ -1,6 +1,6 @@
 package com.revolut.exceptions;
 
-import com.revolut.domain.rest.ErrorResponse;
+import com.revolut.domain.model.ErrorResponse;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;

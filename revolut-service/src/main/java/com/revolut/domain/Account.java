@@ -1,7 +1,4 @@
-package com.revolut.domain.model;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.revolut.domain;
 
 import java.math.BigDecimal;
 
@@ -10,9 +7,7 @@ public class Account {
     private final String id;
     private BigDecimal balance;
 
-    @JsonCreator
-    public Account(@JsonProperty("id")String id,
-                   @JsonProperty("balance")BigDecimal balance) {
+    public Account(String id, BigDecimal balance) {
         this.id = id;
         this.balance = balance;
     }

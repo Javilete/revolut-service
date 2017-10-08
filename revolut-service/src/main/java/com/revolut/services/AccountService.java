@@ -2,16 +2,14 @@ package com.revolut.services;
 
 import com.revolut.dao.AccountRepository;
 import com.revolut.domain.Account;
-import com.revolut.domain.CreateAccountRequest;
-import com.revolut.exceptions.NegativeBalanceException;
+import com.revolut.exceptions.NotEnoughBalanceException;
+import com.revolut.rest.CreateAccountRequest;
 import com.revolut.utils.Generator;
 
 import javax.ws.rs.NotFoundException;
 import java.math.BigDecimal;
 
 public class AccountService {
-
-    private static final String INITIAL_BALANCE = "0.00";
 
     private Generator idGenerator;
     private AccountRepository accountRepository;
@@ -24,7 +22,7 @@ public class AccountService {
     public String insert(CreateAccountRequest createAccountRequest) {
         String accIdentifier = idGenerator.getRandomId();
         Account account = new Account(accIdentifier, createAccountRequest.getBalance()
-                .orElse(new BigDecimal(INITIAL_BALANCE)));
+                .orElse(BigDecimal.ZERO));
         accountRepository.create(account);
 
         return accIdentifier;
@@ -38,10 +36,11 @@ public class AccountService {
     public void transfer(String originAccId, String destinationAccId, BigDecimal amount) {
         Account originAcc = this.findBy(originAccId);
         if (!originAcc.hasEnoughBalance(amount)) {
-            throw new NegativeBalanceException();
+            throw new NotEnoughBalanceException("Account with id: " + originAccId + " does not " +
+                    "have enough balance");
         }
 
-        this.findBy(destinationAccId).decrease(amount);
-        originAcc.add(amount);
+        this.findBy(destinationAccId).add(amount);
+        originAcc.substract(amount);
     }
 }

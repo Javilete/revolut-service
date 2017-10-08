@@ -1,8 +1,8 @@
 package com.revolut.services;
 
 import com.revolut.dao.AccountRepository;
-import com.revolut.domain.model.Account;
-import com.revolut.domain.rest.CreateAccountRequest;
+import com.revolut.domain.Account;
+import com.revolut.rest.CreateAccountRequest;
 import com.revolut.exceptions.NotEnoughBalanceException;
 import com.revolut.utils.Generator;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class AccountServiceShould {
 
     @Test
     public void create_a_new_account() {
-        Account account = new Account(ACC_ID, new BigDecimal("0.00"));
+        Account account = new Account(ACC_ID, new BigDecimal(0.00));
         CreateAccountRequest createAccountRequest = new CreateAccountRequest();
 
         accountService.insert(createAccountRequest);
@@ -58,8 +58,8 @@ public class AccountServiceShould {
 
     @Test
     public void create_a_new_account_with_initial_balance() {
-        Account account = new Account(ACC_ID, new BigDecimal("100.00"));
-        CreateAccountRequest createAccountRequest = new CreateAccountRequest("100.00");
+        Account account = new Account(ACC_ID, new BigDecimal(100.00));
+        CreateAccountRequest createAccountRequest = new CreateAccountRequest(100.00);
 
         accountService.insert(createAccountRequest);
 
@@ -82,7 +82,7 @@ public class AccountServiceShould {
     @Test(expected = NotEnoughBalanceException.class)
     public void throw_an_exception_when_account_balance_of_origin_account_is_below_zero() {
         when(localRepository.fetchBy(ACC_ID))
-                .thenReturn(Optional.of(new Account(ACC_ID, new BigDecimal("-100.00"))));
+                .thenReturn(Optional.of(new Account(ACC_ID, new BigDecimal(-100.00))));
         when(localRepository.fetchBy(DESTINATION_ACC_ID))
                 .thenReturn(Optional.of(DESTINATION_ACCOUNT));
 
