@@ -20,7 +20,7 @@ public class LocalAccountRepositoryShould {
 
     @Before
     public void setUp() throws Exception {
-        repository = new LocalAccountAccountRepository();
+        repository = new LocalAccountRepository();
     }
 
     @Test

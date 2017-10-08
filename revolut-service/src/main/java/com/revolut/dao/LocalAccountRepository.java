@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class LocalAccountAccountRepository implements AccountRepository {
+public class LocalAccountRepository implements AccountRepository {
 
     private Map<String, Account> accounts = new HashMap<>();
 
