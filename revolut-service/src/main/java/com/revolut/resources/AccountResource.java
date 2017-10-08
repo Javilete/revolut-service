@@ -1,10 +1,10 @@
 package com.revolut.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.revolut.domain.Account;
-import com.revolut.domain.CreateAccountRequest;
-import com.revolut.domain.CreateAccountResponse;
-import com.revolut.domain.TransferRequest;
+import com.revolut.domain.model.Account;
+import com.revolut.domain.rest.CreateAccountRequest;
+import com.revolut.domain.rest.CreateAccountResponse;
+import com.revolut.domain.rest.TransferRequest;
 import com.revolut.services.AccountService;
 
 import javax.validation.Valid;

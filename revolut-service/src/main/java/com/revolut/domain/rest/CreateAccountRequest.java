@@ -1,4 +1,4 @@
-package com.revolut.domain;
+package com.revolut.domain.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ public class CreateAccountRequest {
     private BigDecimal balance;
 
     public CreateAccountRequest() {
-        // Jackson deserialization
+
     }
 
     @JsonCreator

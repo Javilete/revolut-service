@@ -1,10 +1,9 @@
 package com.revolut.services;
 
 import com.revolut.dao.AccountRepository;
-import com.revolut.dao.LocalAccountAccountRepository;
-import com.revolut.domain.Account;
-import com.revolut.domain.CreateAccountRequest;
-import com.revolut.exceptions.NegativeBalanceException;
+import com.revolut.domain.model.Account;
+import com.revolut.domain.rest.CreateAccountRequest;
+import com.revolut.exceptions.NotEnoughBalanceException;
 import com.revolut.utils.Generator;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,11 +75,11 @@ public class AccountServiceShould {
 
         accountService.transfer(ACC_ID, DESTINATION_ACC_ID, AMOUNT);
 
-        assertThat(localRepository.fetchBy(ACC_ID).get().getBalance().doubleValue(), is(120.00));
-        assertThat(localRepository.fetchBy(DESTINATION_ACC_ID).get().getBalance().doubleValue(), is(30.00));
+        assertThat(localRepository.fetchBy(ACC_ID).get().getBalance().doubleValue(), is(80.00));
+        assertThat(localRepository.fetchBy(DESTINATION_ACC_ID).get().getBalance().doubleValue(), is(70.00));
     }
 
-    @Test(expected = NegativeBalanceException.class)
+    @Test(expected = NotEnoughBalanceException.class)
     public void throw_an_exception_when_account_balance_of_origin_account_is_below_zero() {
         when(localRepository.fetchBy(ACC_ID))
                 .thenReturn(Optional.of(new Account(ACC_ID, new BigDecimal("-100.00"))));

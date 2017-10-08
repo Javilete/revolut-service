@@ -1,6 +1,6 @@
 package com.revolut.dao;
 
-import com.revolut.domain.Account;
+import com.revolut.domain.model.Account;
 import org.junit.Before;
 import org.junit.Test;
 

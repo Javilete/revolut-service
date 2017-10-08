@@ -1,11 +1,9 @@
 package com.revolut.resources;
 
-import com.revolut.domain.Account;
-import com.revolut.domain.CreateAccountRequest;
-import com.revolut.domain.TransferRequest;
+import com.revolut.domain.rest.CreateAccountRequest;
+import com.revolut.domain.rest.TransferRequest;
 import com.revolut.services.AccountService;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import javafx.animation.Animation;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

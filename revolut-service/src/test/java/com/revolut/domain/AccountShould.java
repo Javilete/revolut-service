@@ -1,5 +1,6 @@
 package com.revolut.domain;
 
+import com.revolut.domain.model.Account;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class AccountShould {
 
     @Test
     public void decrease_amount_of_current_balance() {
-        account.decrease(new BigDecimal(FIFTY_AMOUNT));
+        account.substract(new BigDecimal(FIFTY_AMOUNT));
 
         assertThat(account.getBalance(), is(new BigDecimal(FIFTY_AMOUNT)));
     }
