@@ -42,6 +42,6 @@ public class TransferRequest {
     @ValidationMethod(message = "amount not be greater than 0.00")
     @JsonIgnore
     public boolean isAmountGreaterThanZero() {
-        return amount != null && amount.compareTo(BigDecimal.ZERO) == 1;
+        return amount != null && amount.compareTo(BigDecimal.ZERO) > 0;
     }
 }

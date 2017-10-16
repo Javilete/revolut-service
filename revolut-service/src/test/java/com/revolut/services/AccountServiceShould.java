@@ -2,12 +2,14 @@ package com.revolut.services;
 
 import com.revolut.dao.AccountRepository;
 import com.revolut.domain.Account;
-import com.revolut.rest.CreateAccountRequest;
 import com.revolut.exceptions.NotEnoughBalanceException;
+import com.revolut.rest.CreateAccountRequest;
 import com.revolut.utils.Generator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -29,8 +31,12 @@ public class AccountServiceShould {
     private static final String NON_EXISTING_ACC_ID = UUID.randomUUID().toString();
 
     private static final Account ACCOUNT = new Account(ACC_ID, new BigDecimal("100.00"));
-    private static final Account DESTINATION_ACCOUNT = new Account(DESTINATION_ACC_ID, new BigDecimal("50.00"));
+    private static final Account DESTINATION_ACCOUNT =
+            new Account(DESTINATION_ACC_ID, new BigDecimal("50.00"));
     private static final BigDecimal AMOUNT = new BigDecimal("20.00");
+
+    @Captor
+    private ArgumentCaptor<Account> accountArgCaptor;
 
     @Mock
     private AccountRepository localRepository;
@@ -48,22 +54,24 @@ public class AccountServiceShould {
 
     @Test
     public void create_a_new_account() {
-        Account account = new Account(ACC_ID, new BigDecimal(0.00));
         CreateAccountRequest createAccountRequest = new CreateAccountRequest();
 
         accountService.insert(createAccountRequest);
 
-        verify(localRepository).create(account);
+        verify(localRepository).create(accountArgCaptor.capture());
+        assertThat(accountArgCaptor.getValue().getId(), is(ACC_ID));
+        assertThat(accountArgCaptor.getValue().getBalance().doubleValue(), is(0.00));
     }
 
     @Test
     public void create_a_new_account_with_initial_balance() {
-        Account account = new Account(ACC_ID, new BigDecimal(100.00));
         CreateAccountRequest createAccountRequest = new CreateAccountRequest(100.00);
 
         accountService.insert(createAccountRequest);
 
-        verify(localRepository).create(account);
+        verify(localRepository).create(accountArgCaptor.capture());
+        assertThat(accountArgCaptor.getValue().getId(), is(ACC_ID));
+        assertThat(accountArgCaptor.getValue().getBalance().doubleValue(), is(100.00));
     }
 
     @Test

@@ -11,12 +11,12 @@ public class CreateAccountRequest {
     private BigDecimal balance;
 
     public CreateAccountRequest() {
-
+        //Jackson deserialization
     }
 
     @JsonCreator
     public CreateAccountRequest(double balance) {
-        this.balance = new BigDecimal(balance);
+        this.balance = BigDecimal.valueOf(balance);
     }
 
     @JsonProperty

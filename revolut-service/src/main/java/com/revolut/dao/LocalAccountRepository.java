@@ -2,13 +2,13 @@ package com.revolut.dao;
 
 import com.revolut.domain.Account;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalAccountRepository implements AccountRepository {
 
-    private Map<String, Account> accounts = new HashMap<>();
+    private Map<String, Account> accounts = new ConcurrentHashMap<>();
 
     @Override
     public void create(Account account) {
